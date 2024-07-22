@@ -8,10 +8,7 @@ import { generateAccessAndRefreshToken } from "../utils/generateTokens.js";
 // register user controller post request api/v1/user/register
 const registerUser = asyncHandler(async (req, res) => {
 	// access data from the form-data
-	const [firstName, lastName, userName, email, password] = [
-		req.body.firstName,
-		req.body.lastName,
-		req.body.userName,
+	const [ email, password] = [
 		req.body.email,
 		req.body.password,
 	];
@@ -23,17 +20,17 @@ const registerUser = asyncHandler(async (req, res) => {
 				password,
 			});
 			const result = await customer.save();
-			const createdUser = await Customer.findById(result._id).select(
-				"-password -email"
-			);
+			// const createdUser = await Customer.findById(result._id).select(
+			// 	"-password -email"
+			// );
 
-			// checking if user created or not
-			if (!createdUser) {
-				throw new ApiError(
-					500,
-					"Something went wrong while registering the user"
-				);
-			}
+			// // checking if user created or not
+			// if (!createdUser) {
+			// 	throw new ApiError(
+			// 		500,
+			// 		"Something went wrong while registering the user"
+			// 	);
+			// }
 
 			// return res
 			return res
@@ -41,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
 				.json(
 					new ApiResponse(
 						200,
-						createdUser,
+						result,
 						"User Registered Successfully"
 					)
 				);
